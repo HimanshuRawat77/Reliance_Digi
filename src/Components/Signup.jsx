@@ -40,7 +40,6 @@ export const Signup = () => {
         localStorage.setItem("useremail", email);
         localStorage.setItem("userpassword", password);
 
-        // Uncomment if using toast notifications
         // toast.success("SignUp Successful! Redirecting to the main page...");
 
         // Navigate to the main page ("/") after a successful signup

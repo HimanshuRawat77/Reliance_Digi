@@ -215,7 +215,7 @@ const CartPage = () => {
           method: "DELETE",
           headers: {
             projectId: "bng7dtu7whwk",
-            Authorization: `Bearer YOUR_JWT`,
+            Authorization: `my jwt`,
           },
         }
       );
