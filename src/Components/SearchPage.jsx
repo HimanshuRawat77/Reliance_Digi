@@ -63,11 +63,15 @@ const Search = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {products.length === 0 && !loading && <p>No products found</p>}
           {products.map((product) => (
-            <div key={product._id} className="border p-4 rounded shadow">
+            <div
+              key={product._id}
+              className="border p-4 rounded shadow"
+              onClick={() => handleProductClick(product._id)}
+            >
               <img
                 src={product.displayImage}
                 alt={product.name}
-                className="w-full h-48 object-cover mb-4"
+                className="w-full h-48 object-cover mb-4 cursor-pointer"
               />
               <h4 className="text-lg font-semibold">{product.name}</h4>
               <p className="text-sm">Price: ₹{product.price}</p>
