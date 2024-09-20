@@ -6,14 +6,13 @@ const Products = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Fetch products using your project ID
     const fetchProducts = async () => {
       try {
         const response = await fetch(
           "https://academics.newtonschool.co/api/v1/ecommerce/electronics/products",
           {
             headers: {
-              projectId: "bng7dtu7whwk", // Your actual project ID
+              projectId: "bng7dtu7whwk",
             },
           }
         );

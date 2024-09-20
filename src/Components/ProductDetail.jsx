@@ -26,22 +26,25 @@ const ProductDetail = () => {
   }, [productId]);
 
   const addToCart = (product) => {
-    let cart = JSON.parse(localStorage.getItem("cart")) || []; // Retrieve cart from localStorage
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
     const productExists = cart.find((item) => item.id === product.id);
 
     if (productExists) {
-      // Update the quantity if the product already exists in the cart
       productExists.quantity += 1;
     } else {
-      // Add new product to the cart
       cart.push({ ...product, quantity: 1 });
     }
 
-    localStorage.setItem("cart", JSON.stringify(cart)); // Update cart in localStorage
-    navigate("/Cart"); // Redirect to the cart page
+    localStorage.setItem("cart", JSON.stringify(cart));
+    navigate("/cart");
   };
 
-  if (!product) return;
+  const handleBuyNow = (product) => {
+    localStorage.setItem("selectedProduct", JSON.stringify(product));
+    navigate("/checkout");
+  };
+
+  if (!product) return null;
 
   return (
     <div>
@@ -78,7 +81,7 @@ const ProductDetail = () => {
               {product.name}
             </h1>
             <h2 className="text-xl text-[#1f288a] mb-4">
-              Deal Price : ₹{product.price}
+              Deal Price: ₹{product.price}
             </h2>
             <div className="bg-[#f8f2f2] p-4 rounded shadow-md">
               <h3 className="text-lg text-[#040404] font-semibold mb-2">
@@ -100,7 +103,6 @@ const ProductDetail = () => {
                 {showMore ? "Show Less" : "Show More"}
               </button>
             </div>
-            {/* Add to Cart Button */}
             <div className="mt-4">
               <button
                 className="w-full bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-md font-bold"
@@ -109,11 +111,10 @@ const ProductDetail = () => {
                 Add to Cart
               </button>
             </div>
-            {/* Buy Now button */}
             <div className="mt-4">
               <button
                 className="w-full bg-orange-500 hover:bg-orange-400 text-white py-2 px-4 rounded-md font-bold"
-                onClick={() => navigate(`/checkout`)} // Navigate to checkout page
+                onClick={() => handleBuyNow(product)}
               >
                 Buy Now
               </button>

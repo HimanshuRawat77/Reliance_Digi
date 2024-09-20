@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate, Link } from "react-router-dom"; // Import Link
+import { useNavigate, Link } from "react-router-dom";
 
 function Signin() {
   const navigate = useNavigate();
@@ -7,11 +7,11 @@ function Signin() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
-    if (email === "himanshu@gmail.com" && password === "himanshu") {
-      navigate("/main");
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!email || !password) {
+      alert("All fields are required");
+      return;
     } else {
       try {
         const response = await fetch(

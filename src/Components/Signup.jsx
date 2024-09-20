@@ -95,7 +95,7 @@ export const Signup = () => {
         </button>
         <p className="mt-5 text-sm">
           <a
-            onClick={() => navigate("/login")}
+            onClick={() => navigate("/main")}
             className="text-red-600 hover:underline cursor-pointer"
           >
             Already have an account?

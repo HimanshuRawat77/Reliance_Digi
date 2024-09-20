@@ -13,7 +13,7 @@ import MyOrders from "./Myorders";
 import { User } from "lucide-react";
 
 import SearchPage from "./SearchPage";
-import Products from "./Products";
+
 import FilteredProducts from "./FilterProducts";
 
 const Main = () => {
@@ -33,6 +33,7 @@ const Main = () => {
       {/* <FilterPage /> */}
 
       <Footer />
+
       {/* <FilteredProducts /> */}
     </>
   );

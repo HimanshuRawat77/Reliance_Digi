@@ -14,7 +14,6 @@ const PaymentPage = () => {
 
   // Fetch cart items and calculate total price
   useEffect(() => {
-    // Replace with your actual API call
     const fetchCartItems = async () => {
       const response = await fetch("/api/cart"); // Adjust the URL to your API
       const data = await response.json();
@@ -39,36 +38,26 @@ const PaymentPage = () => {
   const validate = () => {
     const newErrors = {};
 
-    // Card number validation (16 digits only)
     if (!/^\d{16}$/.test(cardDetails.cardNumber)) {
       newErrors.cardNumber = "Card number should be 16 digits long.";
     }
-
-    // Valid through date validation (MM/YY format)
     if (!/^(0[1-9]|1[0-2])\/\d{2}$/.test(cardDetails.expiryMonthYear)) {
       newErrors.expiryMonthYear = "Invalid date format. Use MM/YY.";
     }
-
-    // CVV validation (3 digits only)
     if (!/^\d{3}$/.test(cardDetails.cvv)) {
       newErrors.cvv = "CVV should be 3 digits long.";
     }
-
-    // Name on card validation (alphabets only)
     if (!/^[A-Za-z ]+$/.test(cardDetails.nameOnCard)) {
       newErrors.nameOnCard = "Name on card should contain only letters.";
     }
 
     setErrors(newErrors);
-
-    // Return true if there are no errors
     return Object.keys(newErrors).length === 0;
   };
 
   const handlePay = () => {
     if (validate()) {
       console.log("Payment details:", cardDetails);
-      // Proceed with the payment API call or form submission
       alert("Payment successful!");
     } else {
       console.log("Validation failed. Please check your input.");
@@ -77,10 +66,8 @@ const PaymentPage = () => {
 
   return (
     <div className="payment-page container mx-auto px-4 py-8 flex">
-      {/* Card details form */}
       <div className="card-details w-1/2">
         <h2 className="text-xl mb-4">Enter details here</h2>
-
         {/* Card Number */}
         <div className="form-group mb-4">
           <input
@@ -144,13 +131,21 @@ const PaymentPage = () => {
       </div>
 
       {/* Price details section */}
-      <div className="price-details w-1/2">
+      <div className="price-details w-1/2 ml-8">
         <h2 className="text-xl mb-4">
           PRICE DETAILS ({cartItems.length} items)
         </h2>
+        {cartItems.map((item) => (
+          <div key={item.id} className="flex justify-between mb-2">
+            <span>
+              {item.title} (x{item.quantity})
+            </span>
+            <span>{item.price.toFixed(2)} each</span> {/* Price per item */}
+          </div>
+        ))}
         <div className="flex justify-between mb-2">
           <span>Total MRP (Inc. of Taxes)</span>
-          <span>{totalPrice}</span>
+          <span>{totalPrice.toFixed(2)}</span>
         </div>
         <div className="flex justify-between mb-2">
           <span>Shipping</span>
@@ -158,7 +153,7 @@ const PaymentPage = () => {
         </div>
         <div className="flex justify-between border-t pt-2">
           <span>Cart Total</span>
-          <span>{totalPrice}</span>
+          <span>{totalPrice.toFixed(2)}</span>
         </div>
       </div>
     </div>
