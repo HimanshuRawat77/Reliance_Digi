@@ -1,91 +1,88 @@
 import React, { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-function Signin() {
-  const navigate = useNavigate();
+const Signin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [error, setError] = useState(""); // State to store error messages
+  const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
+  const handleLogin = (e) => {
     e.preventDefault();
-    if (!email || !password) {
-      alert("All fields are required");
-      return;
+
+    // Retrieve the registered email and password from localStorage
+    const registeredEmail = localStorage.getItem("registeredUserEmail");
+    const registeredPassword = localStorage.getItem("registeredUserPassword");
+
+    // Check if the entered credentials match the stored credentials
+    if (email === registeredEmail && password === registeredPassword) {
+      // Store the username in localStorage
+      localStorage.setItem("username", email);
+
+      // Navigate to the main page upon successful login
+      navigate("/main");
     } else {
-      try {
-        const response = await fetch(
-          "https://academics.newtonschool.co/api/v1/user/login",
-          {
-            method: "POST",
-            headers: {
-              accept: "application/json",
-              projectID: "bng7dtu7whwk",
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              email: email,
-              password: password,
-              appType: "ecommerce",
-            }),
-          }
-        );
-
-        const data = await response.json();
-
-        if (response.ok) {
-          navigate("/main");
-          setEmail("");
-          setPassword("");
-          setError("");
-        } else {
-          setError(data.message || "Login failed");
-        }
-      } catch (error) {
-        console.error("Error:", error);
-        setError("Error logging in");
-      }
+      // Set an error message if login fails
+      setError("Invalid email or password. Please try again.");
     }
   };
 
   return (
-    <div className="oc">
-      <form onSubmit={handleSubmit}>
-        <div className="flex flex-col items-center mt-12">
-          <h1 className="text-2xl mb-5">Log in</h1>
-          <input
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            type="text"
-            className="w-72 p-2 mb-2 border border-gray-300 rounded-lg mt-5"
-            placeholder="Email"
-          />
-          <input
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            type="password"
-            className="w-72 p-2 mb-5 border border-gray-300 rounded-lg"
-            placeholder="Password"
-          />
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+      <div className="bg-white p-8 rounded shadow-md w-96">
+        <h2 className="text-2xl font-bold text-center mb-6">Log in</h2>
+        {error && <p className="text-red-500 text-center mb-4">{error}</p>}
+        <form onSubmit={handleLogin}>
+          <div className="mb-4">
+            <label
+              className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="email"
+            >
+              Email
+            </label>
+            <input
+              id="email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-red-500"
+              placeholder="Email"
+              required
+            />
+          </div>
+          <div className="mb-6">
+            <label
+              className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="password"
+            >
+              Password
+            </label>
+            <input
+              id="password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-red-500"
+              placeholder="Password"
+              required
+            />
+          </div>
           <button
             type="submit"
-            className="w-80 p-2 bg-red-600 text-white rounded-lg hover:bg-red-500 text-lg"
+            className="w-full bg-red-500 text-white font-bold py-2 px-4 rounded hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
           >
             PROCEED
           </button>
-          <p className="mt-5 text-sm">
-            Create an account?{" "}
-            <Link to="/signup" className="text-red-400 hover:underline">
-              Register
-            </Link>
-          </p>
-          {error && <p className="text-red-500 mt-3">{error}</p>}
-        </div>
-      </form>
+        </form>
+        <p className="text-center text-sm text-gray-500 mt-6">
+          Don't have an account?{" "}
+          <a href="/signup" className="text-red-500">
+            Register
+          </a>
+        </p>
+      </div>
     </div>
   );
-}
+};
 
 export default Signin;

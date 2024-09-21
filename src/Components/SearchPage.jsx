@@ -46,7 +46,7 @@ const Search = () => {
 
   const handleProductClick = (productId) => {
     // Navigate to the product detail page with the product ID
-    navigate(`/product/${productId}`);
+    navigate(`/products/${productId}`);
   };
 
   return (
@@ -66,7 +66,7 @@ const Search = () => {
             <div
               key={product._id}
               className="border p-4 rounded shadow"
-              onClick={() => handleProductClick(product._id)}
+              onClick={() => handleProductClick(product._id)} // Corrected product._id here
             >
               <img
                 src={product.displayImage}
