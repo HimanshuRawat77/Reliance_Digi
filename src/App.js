@@ -14,7 +14,7 @@ import Payment from "./Components/Payment";
 import SearchPage from "./Components/SearchPage";
 
 import Products from "./Components/Products";
-import FilterProducts from "./Components/FilterProducts";
+
 import Cart from "./Components/Cart";
 
 function App() {
@@ -35,7 +35,6 @@ function App() {
           <Route path="/Payment" element={<Payment />} />
           <Route path="/search" element={<SearchPage />} />
           <Route path="/search" element={<Products />} />
-          <Route path="/search" element={<FilterProducts />} />
           {/* <Route path="/search" element={<FilterPage />} /> */}
           <Route path="/cart" element={<Cart />} />
         </Routes>

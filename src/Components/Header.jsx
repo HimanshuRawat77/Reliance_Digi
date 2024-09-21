@@ -56,7 +56,7 @@ const Header = () => {
             placeholder="Find your Favourite Products"
             className="search-input ml-10 w-3/5 p-2 border-none rounded-full text-lg text-black placeholder-gray-300"
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)} // Update state on input change
+            onChange={(e) => setSearchQuery(e.target.value)}
           />
         </form>
       </div>
@@ -90,7 +90,7 @@ const Header = () => {
                   <li
                     className="cursor-pointer hover:bg-gray-100 p-2"
                     onClick={() => {
-                      navigate("/userProfile"); // Change this line to navigate to the userProfile page
+                      navigate("/userProfile");
                       setShowDropdown(false);
                     }}
                   >

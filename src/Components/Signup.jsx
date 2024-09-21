@@ -11,12 +11,12 @@ export const Signup = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    // Simulating a signup process by storing email and password in localStorage
+    // Simulating a signup process by storing user details in localStorage
     try {
-      // Store user details in localStorage
-      localStorage.setItem("registeredUserEmail", email);
-      localStorage.setItem("registeredUserPassword", password);
-      localStorage.setItem("registeredUserName", name);
+      // Store user details in localStorage with consistent keys
+      localStorage.setItem("username", name);
+      localStorage.setItem("useremail", email);
+      localStorage.setItem("userpassword", password);
 
       // Navigate to the login page after signup
       navigate("/login");

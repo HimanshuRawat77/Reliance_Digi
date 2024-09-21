@@ -1,41 +1,36 @@
 import React, { useState, useEffect } from "react";
 import Modal from "react-modal";
-import { useForm } from "react-hook-form"; // You can add validation for the form if needed
+import { useForm } from "react-hook-form";
 
-// Custom styles for Modal (You can style it as per your requirement)
 Modal.setAppElement("#root");
 
 export const UserProfile = () => {
-  const [isEditing, setIsEditing] = useState(false); // State for enabling edit mode
-  const [showPasswordModal, setShowPasswordModal] = useState(false); // State for showing/hiding the password change modal
+  const [isEditing, setIsEditing] = useState(false);
+  const [showPasswordModal, setShowPasswordModal] = useState(false);
 
-  const [name, setName] = useState(""); // State for name
-  const [email, setEmail] = useState(""); // State for email
-  const [password, setPassword] = useState(""); // State for password (this will not be displayed in plain text)
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [profilePic, setProfilePic] = useState(null); // State for profile picture
 
-  // Autofill data from localStorage when the component loads
   useEffect(() => {
     setName(localStorage.getItem("username") || "");
     setEmail(localStorage.getItem("useremail") || "");
-    setPassword(localStorage.getItem("userpassword") || "");
   }, []);
 
-  // Enable/Disable Edit Mode
   const handleEdit = () => {
     setIsEditing(!isEditing);
   };
 
-  // Handle form submission (Update Profile)
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Store the updated data in localStorage (or you can send to API)
     localStorage.setItem("username", name);
     localStorage.setItem("useremail", email);
-    localStorage.setItem("userpassword", password); // Only update if password is changed
-    setIsEditing(false); // Disable edit mode after saving
+    if (profilePic) {
+      // You can handle profile picture upload logic here if needed
+    }
+    setIsEditing(false);
   };
 
-  // Handle Password Change Modal
   const openPasswordModal = () => {
     setShowPasswordModal(true);
   };
@@ -44,12 +39,21 @@ export const UserProfile = () => {
     setShowPasswordModal(false);
   };
 
-  // Handle Password Change Form Submission
   const handlePasswordChange = (e) => {
     e.preventDefault();
-    // Here, you would typically handle password update logic
     alert("Password updated successfully!");
-    closePasswordModal(); // Close the modal after updating the password
+    closePasswordModal();
+  };
+
+  const handleProfilePicChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setProfilePic(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   return (
@@ -70,7 +74,19 @@ export const UserProfile = () => {
         </div>
         <div className="mt-4">
           <label>Profile Picture</label>
-          <input type="file" className="w-full" disabled={!isEditing} />
+          <input
+            type="file"
+            className="w-full"
+            onChange={handleProfilePicChange}
+            disabled={!isEditing}
+          />
+          {profilePic && (
+            <img
+              src={profilePic}
+              alt="Profile Preview"
+              className="mt-2 w-20 h-20 rounded-full"
+            />
+          )}
         </div>
         <div className="mt-4">
           <label>Name</label>
@@ -97,7 +113,7 @@ export const UserProfile = () => {
             value="**********"
             className="w-full p-2 border border-gray-300 rounded-lg cursor-pointer"
             disabled={!isEditing}
-            onClick={openPasswordModal} // Opens the modal for changing password
+            onClick={openPasswordModal}
           />
         </div>
         {isEditing && (

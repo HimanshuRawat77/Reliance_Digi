@@ -4,25 +4,21 @@ import { useNavigate } from "react-router-dom";
 const Signin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(""); // State to store error messages
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const handleLogin = (e) => {
     e.preventDefault();
 
-    // Retrieve the registered email and password from localStorage
-    const registeredEmail = localStorage.getItem("registeredUserEmail");
-    const registeredPassword = localStorage.getItem("registeredUserPassword");
+    const registeredEmail = localStorage.getItem("useremail");
+    const registeredPassword = localStorage.getItem("userpassword");
+    const registeredUsername = localStorage.getItem("username");
 
-    // Check if the entered credentials match the stored credentials
     if (email === registeredEmail && password === registeredPassword) {
-      // Store the username in localStorage
-      localStorage.setItem("username", email);
+      localStorage.setItem("username", registeredUsername);
 
-      // Navigate to the main page upon successful login
       navigate("/main");
     } else {
-      // Set an error message if login fails
       setError("Invalid email or password. Please try again.");
     }
   };

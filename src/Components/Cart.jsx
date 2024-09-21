@@ -4,6 +4,8 @@ import Footer from "./Footer";
 const CartPage = () => {
   const [cartItems, setCartItems] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
+  const token =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NDJmNmFiMzgyZjViYWNkNTM5YWIwYiIsImlhdCI6MTcyNjkwMzYyNywiZXhwIjoxNzU4NDM5NjI3fQ.5mA4sx3z-kxAbB5fdfGpbpDcgJjH7Uby2caJQake7Fw";
 
   useEffect(() => {
     fetchCartItems();
@@ -17,13 +19,19 @@ const CartPage = () => {
           method: "GET",
           headers: {
             projectId: "bng7dtu7whwk",
-            Authorization: ``,
+            Authorization: `Bearer ${token}`,
           },
         }
       );
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch cart items");
+      }
+
       const data = await response.json();
-      setCartItems(data.cartItems);
-      calculateTotalPrice(data.cartItems);
+      console.log(data);
+      setCartItems(data.cartItems || []);
+      calculateTotalPrice(data.cartItems || []);
     } catch (error) {
       console.error("Error fetching cart items:", error);
     }
@@ -52,7 +60,7 @@ const CartPage = () => {
           headers: {
             projectId: "bng7dtu7whwk",
             "Content-Type": "application/json",
-            Authorization: `Bearer YOUR_JWT`,
+            Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({
             quantity: newQuantity,
@@ -77,7 +85,7 @@ const CartPage = () => {
           method: "DELETE",
           headers: {
             projectId: "bng7dtu7whwk",
-            Authorization: `my jwt`,
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -95,7 +103,7 @@ const CartPage = () => {
       <div className="flex-grow">
         <div className="flex flex-col lg:flex-row p-6 space-y-6 lg:space-y-0 lg:space-x-6">
           <div className="w-full lg:w-3/4">
-            {cartItems.length > 0 ? (
+            {Array.isArray(cartItems) && cartItems.length > 0 ? (
               cartItems.map((item) => (
                 <div
                   key={item.id}
