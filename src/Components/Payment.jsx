@@ -12,22 +12,16 @@ const PaymentPage = () => {
   const [cartItems, setCartItems] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
 
-  // Fetch cart items and calculate total price
+  // Fetch cart items from localStorage and calculate total price
   useEffect(() => {
-    const fetchCartItems = async () => {
-      const response = await fetch("/api/cart"); // Adjust the URL to your API
-      const data = await response.json();
-      setCartItems(data);
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    setCartItems(cart);
 
-      // Calculate total price
-      const total = data.reduce(
-        (sum, item) => sum + item.price * item.quantity,
-        0
-      );
-      setTotalPrice(total);
-    };
-
-    fetchCartItems();
+    const total = cart.reduce(
+      (sum, item) => sum + item.price * item.quantity,
+      0
+    );
+    setTotalPrice(total);
   }, []);
 
   const handleChange = (e) => {
@@ -59,6 +53,7 @@ const PaymentPage = () => {
     if (validate()) {
       console.log("Payment details:", cardDetails);
       alert("Payment successful!");
+      // Here you can handle payment processing (e.g., call to your payment API)
     } else {
       console.log("Validation failed. Please check your input.");
     }
@@ -67,7 +62,8 @@ const PaymentPage = () => {
   return (
     <div className="payment-page container mx-auto px-4 py-8 flex">
       <div className="card-details w-1/2">
-        <h2 className="text-xl mb-4">Enter details here</h2>
+        <h2 className="text-xl mb-4">Enter Card Details</h2>
+
         {/* Card Number */}
         <div className="form-group mb-4">
           <input
@@ -124,7 +120,7 @@ const PaymentPage = () => {
 
         <button
           onClick={handlePay}
-          className="bg-gray-300 text-white py-2 px-4 w-full mt-4"
+          className="bg-red-500 text-white py-2 px-4 w-full mt-4"
         >
           Pay
         </button>
@@ -138,14 +134,14 @@ const PaymentPage = () => {
         {cartItems.map((item) => (
           <div key={item.id} className="flex justify-between mb-2">
             <span>
-              {item.title} (x{item.quantity})
+              {item.title}QUANTITY( {item.quantity})
             </span>
-            <span>{item.price.toFixed(2)} each</span> {/* Price per item */}
+            <span>₹{item.price.toFixed(2)} each</span>
           </div>
         ))}
         <div className="flex justify-between mb-2">
           <span>Total MRP (Inc. of Taxes)</span>
-          <span>{totalPrice.toFixed(2)}</span>
+          <span>₹{totalPrice.toFixed(2)}</span>
         </div>
         <div className="flex justify-between mb-2">
           <span>Shipping</span>
@@ -153,7 +149,7 @@ const PaymentPage = () => {
         </div>
         <div className="flex justify-between border-t pt-2">
           <span>Cart Total</span>
-          <span>{totalPrice.toFixed(2)}</span>
+          <span>₹{totalPrice.toFixed(2)}</span>
         </div>
       </div>
     </div>

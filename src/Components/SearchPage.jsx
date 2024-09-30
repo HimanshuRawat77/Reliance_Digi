@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+
 import Header from "./Header";
 
 const Search = () => {
@@ -52,6 +53,7 @@ const Search = () => {
   return (
     <div>
       <Header />
+
       <div className="container mx-auto p-4">
         {/* Display loading message */}
         {loading && <p>Loading...</p>}

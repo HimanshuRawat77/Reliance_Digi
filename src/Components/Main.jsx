@@ -1,11 +1,12 @@
 import React from "react";
 import Footer from "./Footer";
+import Header from "./Header";
 import Bestseller from "./Bestseller";
 import TopRated from "./TopRated";
 import NewArrivals from "./NewArrivals";
 import Trending from "./Trending";
 import ProductDetail from "./ProductDetail";
-import Header from "./Header";
+import CategoryFilter from "./CategoryFilter";
 
 import Cart from "./Cart";
 import MyOrders from "./Myorders";
@@ -19,20 +20,15 @@ const Main = () => {
     <>
       <Header />
 
-      {/* <Subnavbar />{" "} */}
-
       <Bestseller />
       <Trending />
       <TopRated />
 
       <NewArrivals />
       <ProductDetail />
-      {/* <PriceFilter /> */}
-      {/* <CategoryFilter />
-      <CombineFilter /> */}
-      <Cart />
 
       <Footer />
+      {/* <CategoryFilter /> */}
     </>
   );
 };
