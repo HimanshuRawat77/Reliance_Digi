@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 const PaymentPage = () => {
   const [cardDetails, setCardDetails] = useState({
@@ -11,6 +12,7 @@ const PaymentPage = () => {
   const [errors, setErrors] = useState({});
   const [cartItems, setCartItems] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
+  const [paymentSuccess, setPaymentSuccess] = useState(false);
 
   // Fetch cart items from localStorage and calculate total price
   useEffect(() => {
@@ -53,6 +55,7 @@ const PaymentPage = () => {
     if (validate()) {
       console.log("Payment details:", cardDetails);
       alert("Payment successful!");
+      setPaymentSuccess(true);
       // Here you can handle payment processing (e.g., call to your payment API)
     } else {
       console.log("Validation failed. Please check your input.");
@@ -60,8 +63,8 @@ const PaymentPage = () => {
   };
 
   return (
-    <div className="payment-page container mx-auto px-4 py-8 flex">
-      <div className="card-details w-1/2">
+    <div className="payment-page container mx-auto px-4 py-8 flex flex-col md:flex-row">
+      <div className="card-details w-full md:w-1/2 mb-8 md:mb-0">
         <h2 className="text-xl mb-4">Enter Card Details</h2>
 
         {/* Card Number */}
@@ -124,17 +127,26 @@ const PaymentPage = () => {
         >
           Pay
         </button>
+
+        {paymentSuccess && (
+          <Link
+            to="/main"
+            className="block text-center mt-4 text-blue-500 hover:underline"
+          >
+            Continue Shopping
+          </Link>
+        )}
       </div>
 
       {/* Price details section */}
-      <div className="price-details w-1/2 ml-8">
+      <div className="price-details w-full md:w-1/2 md:ml-8">
         <h2 className="text-xl mb-4">
           PRICE DETAILS ({cartItems.length} items)
         </h2>
         {cartItems.map((item) => (
           <div key={item.id} className="flex justify-between mb-2">
             <span>
-              {item.title}QUANTITY( {item.quantity})
+              {item.title} QUANTITY ({item.quantity})
             </span>
             <span>₹{item.price.toFixed(2)} each</span>
           </div>
