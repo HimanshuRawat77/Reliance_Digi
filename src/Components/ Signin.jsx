@@ -46,6 +46,9 @@ const Signin = () => {
       if (data.status === "success") {
         const authToken = data.authToken;
         login(authToken);
+        // Store username in localStorage
+        const username = email.split("@")[0];
+        localStorage.setItem("username", username);
         navigate("/main");
       } else {
         setErrorMessage(data.message);

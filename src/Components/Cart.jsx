@@ -6,13 +6,20 @@ import Footer from "./Footer";
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Fetch cart items from localStorage when component mounts
-    const cart = JSON.parse(localStorage.getItem("cart")) || [];
-    setCartItems(cart);
-    calculateTotalPrice(cart);
+    // Check if user is logged in
+    const username = localStorage.getItem("username");
+    setIsLoggedIn(!!username);
+
+    // Only fetch cart items if user is logged in
+    if (username) {
+      const cart = JSON.parse(localStorage.getItem("cart")) || [];
+      setCartItems(cart);
+      calculateTotalPrice(cart);
+    }
   }, []);
 
   // Function to calculate total price
@@ -42,6 +49,19 @@ const Cart = () => {
     calculateTotalPrice(updatedCart);
   };
 
+  // Function to add item to cart
+  const addToCart = (item) => {
+    const existingItem = cartItems.find((cartItem) => cartItem.id === item.id);
+    if (existingItem) {
+      updateQuantity(item.id, existingItem.quantity + 1);
+    } else {
+      const updatedCart = [...cartItems, { ...item, quantity: 1 }];
+      setCartItems(updatedCart);
+      localStorage.setItem("cart", JSON.stringify(updatedCart));
+      calculateTotalPrice(updatedCart);
+    }
+  };
+
   // Function to handle checkout
   const handleCheckout = () => {
     if (cartItems.length > 0) {
@@ -51,6 +71,20 @@ const Cart = () => {
       alert("Your cart is empty");
     }
   };
+
+  if (!isLoggedIn) {
+    return (
+      <div className="flex flex-col min-h-screen">
+        <Header />
+        <div className="container mx-auto p-4 flex-grow flex justify-center items-center">
+          <h2 className="text-xl text-gray-700">
+            Please login first to see cart items
+          </h2>
+        </div>
+        <Footer className="mt-auto" />
+      </div>
+    );
+  }
 
   if (cartItems.length === 0) {
     return (
